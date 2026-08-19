@@ -21,15 +21,15 @@ export const features = [
 		desc: "Encode or decode strings to URL-safe format",
 		category: "Converters",
 		icon: "🔄",
-		status: "in progress",
+		status: "ready",
 	},
 	{
-		id: "jwt-decoder",
+		id: "jwt",
 		name: "JWT Decoder",
 		desc: "Decode header & payload, check expiration dates locally.",
 		category: "Security",
 		icon: "🔑",
-		status: "planned",
+		status: "ready",
 	},
 	{
 		id: "diff-viewer",
