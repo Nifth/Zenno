@@ -8,9 +8,9 @@
             }
         try {
             if (mode === 'encode') {
-                return { value: btoa(input), error: null };              
+                return { value: encodeURI(input), error: null };              
             }
-            const decoded = atob(input.trim());
+            const decoded = decodeURI(input.trim());
             return { value: decoded, error: null };
         } catch {
             return { 
@@ -21,7 +21,7 @@
     })
 </script>
 
-<ToolLayout title="Base64 Encoder / Decoder">
+<ToolLayout title="URL Encoder / Decoder">
   {#snippet actions()}
     <div class="inline-flex p-1 rounded-lg bg-neutral-900 border border-neutral-800 text-xs font-semibold">
       <button 

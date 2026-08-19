@@ -3,7 +3,7 @@
     import { page } from '$app/stores';  
     import type { Snippet } from 'svelte';
     
-	let { actions, children }: { actions?: Snippet; children: Snippet } = $props();
+	let { children }: { children: Snippet } = $props();
     
     const currentFeature = activeFeatures().find((f) => {
         return $page.url.pathname.includes(f.id)
@@ -36,7 +36,7 @@
     			{#each activeFeatures() as feature}
     				{@const isActive = $page.url.pathname.includes(feature.id)}
     				<a
-    					href={`/tools/${feature.id}`}
+    					href={`/${feature.id}`}
     					class="flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-medium transition-all duration-150
     						{isActive 
     							? 'bg-fuchsia-500/10 text-fuchsia-400 border border-fuchsia-500/20 font-semibold' 

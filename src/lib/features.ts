@@ -21,7 +21,7 @@ export const features = [
 		desc: "Encode or decode strings to URL-safe format",
 		category: "Converters",
 		icon: "🔄",
-		status: "planned",
+		status: "in progress",
 	},
 	{
 		id: "jwt-decoder",
