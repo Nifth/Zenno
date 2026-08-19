@@ -13,7 +13,7 @@ export const features = [
 		desc: "Encode or decode strings to Base64",
 		category: "Converters",
 		icon: "🔄",
-		status: "in progress",
+		status: "ready",
 	},
 	{
 		id: "url",
