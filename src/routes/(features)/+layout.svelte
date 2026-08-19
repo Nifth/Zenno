@@ -1,8 +1,13 @@
 <script lang="ts">
     import { activeFeatures } from "$lib/features"
     import { page } from '$app/stores';  
-
-    let { children } = $props();
+    import type { Snippet } from 'svelte';
+    
+	let { actions, children }: { actions?: Snippet; children: Snippet } = $props();
+    
+    const currentFeature = activeFeatures().find((f) => {
+        return $page.url.pathname.includes(f.id)
+    })
 </script>
 
 <div class="flex">
@@ -52,7 +57,7 @@
     </aside>
     
     <!-- Zone de contenu principal de la Feature -->
-    <main class="flex-1 overflow-y-auto bg-neutral-950">
-    	{@render children()}
+    <main class="flex-1 overflow-y-auto p-8">
+       	{@render children()}
     </main>
 </div>
