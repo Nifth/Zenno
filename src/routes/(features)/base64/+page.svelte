@@ -1,19 +1,26 @@
 <script lang="ts">
     import ToolLayout from '$lib/components/ToolLayout.svelte';
     let mode = $state<'encode' | 'decode'>('decode');
+    let input = $state('')
+    let result = $derived.by(() => {
+        if (!input.trim()) {
+                return { value: '', error: null };
+            }
+        try {
+            if (mode === 'encode') {
+                return { value: btoa(input), error: null };              
+            }
+            const decoded = atob(input.trim());
+            return { value: decoded, error: null };
+        } catch {
+            return { 
+                value: '', 
+                error: 'Invalid Base64 string: failed to decode input.' 
+            };
+        }
+    })
 </script>
 
-{#snippet actions()}
-    <!-- Toggle Encode / Decode -->
-    <div class="inline-flex p-1 rounded-lg bg-neutral-900 border border-neutral-800 text-xs font-semibold">
-        <button type="button" class="px-4 py-1.5 rounded-md text-neutral-400 hover:text-neutral-200 transition-colors">
-        Encode
-        </button>
-        <button type="button" class="px-4 py-1.5 rounded-md bg-fuchsia-500/10 text-fuchsia-400 border border-fuchsia-500/20 shadow-sm">
-        Decode
-        </button>
-    </div>
-{/snippet}
 <ToolLayout title="Base64 Encoder / Decoder">
   {#snippet actions()}
     <!-- Les boutons sont injectés dans le header du layout -->
@@ -44,6 +51,7 @@
               <textarea
               id="input-data"
               rows="8"
+              bind:value={input}
               placeholder="Paste your content here..."
               class="w-full flex-1 p-4 rounded-xl bg-neutral-900/60 border border-neutral-800 text-neutral-100 placeholder-neutral-600 focus:outline-none focus:border-fuchsia-500/50 focus:ring-1 focus:ring-fuchsia-500/50 resize-none font-mono text-sm leading-relaxed"
               ></textarea>
@@ -61,9 +69,16 @@
               id="output-data"
               rows="8"
               readonly
+              bind:value={result.value}
               placeholder="Result will appear here..."
-              class="w-full flex-1 p-4 rounded-xl bg-neutral-900/30 border border-neutral-800/80 text-fuchsia-400 placeholder-neutral-700 focus:outline-none resize-none font-mono text-sm leading-relaxed cursor-text"
+              class="w-full flex-1 p-4 rounded-xl bg-neutral-900/30 border border-neutral-800/80 text-fuchsia-400 placeholder-neutral-700 focus:outline-none resize-none font-mono text-sm leading-relaxed cursor-text focus:border-fuchsia-500/50 focus:ring-1 focus:ring-fuchsia-500/50"
               ></textarea>
+              <!-- Message d'erreur sous le textarea si invalide -->
+              {#if result.error}
+                  <span class="mt-1 text-xs text-red-400 font-semibold flex items-center gap-1">
+                  ⚠️ {result.error}
+                  </span>
+              {/if}
       </div>
   
   </div>
