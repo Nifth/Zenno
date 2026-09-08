@@ -58,14 +58,6 @@ export const features: Feature[] = [
 		icon: "🧪",
 		status: "planned",
 	},
-	{
-		id: "sql-formatter",
-		name: "SQL Formatter",
-		desc: "Clean up ugly SQL queries and convert dialect formats.",
-		category: "Formatters",
-		icon: "🗄",
-		status: "planned",
-	},
 ];
 
 export const activeFeatures = (): Feature[] => {
