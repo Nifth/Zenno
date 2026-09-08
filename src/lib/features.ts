@@ -56,7 +56,7 @@ export const features: Feature[] = [
 		desc: "Test JavaScript regular expressions with live highlights.",
 		category: "DevTools",
 		icon: "🧪",
-		status: "ready",
+		status: "ready"
 	},
 ];
 
