@@ -4,6 +4,18 @@ import tailwindcss from '@tailwindcss/vite';
 import adapter from '@sveltejs/adapter-static';
 import { sveltekit } from '@sveltejs/kit/vite';
 
+// Node's `process` typed locally so we don't need to pull in @types/node
+// just to read one build-time env var.
+declare const process: { env: Record<string, string | undefined> };
+
+// GitHub Pages serves a project repo under /<repo>. The deploy workflow passes
+// BASE_PATH (bare repo name or with a leading slash); normalize to SvelteKit's
+// required `'' | /${string}` shape. Empty locally → app stays at the root.
+const rawBase = process.env.BASE_PATH ?? '';
+const basePath = (rawBase === '' || rawBase.startsWith('/') ? rawBase : `/${rawBase}`) as
+    | ''
+    | `/${string}`;
+
 export default defineConfig({
 	plugins: [
 		tailwindcss(),
@@ -22,7 +34,12 @@ export default defineConfig({
                 fallback: '404.html',
                 precompress: false,
                 strict: true
-            })
+            }),
+            // Served from a GitHub Pages project subpath (e.g. /Zenno) in CI;
+            // empty locally. The deploy workflow sets BASE_PATH to the repo name.
+            paths: {
+                base: basePath
+            }
 		})
 	],
 	test: {

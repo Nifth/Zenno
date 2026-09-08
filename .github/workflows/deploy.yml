@@ -1,0 +1,52 @@
+name: Deploy to GitHub Pages
+
+# Build on every push to main and publish the static output to the `gh-pages`
+# branch. gh-pages is rewritten from scratch each run (orphan commit), so it
+# only ever contains the build — never the source.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# The deploy step force-pushes to gh-pages using the automatic GITHUB_TOKEN.
+permissions:
+  contents: write
+
+# Never let two deploys race; the newest push wins.
+concurrency:
+  group: gh-pages-deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build
+        # GitHub serves a project repo under /<repo> (e.g. /Zenno). vite.config.ts
+        # reads BASE_PATH and normalizes it into SvelteKit's paths.base.
+        run: |
+          export BASE_PATH="${GITHUB_REPOSITORY#*/}"
+          bun run build
+
+      - name: Publish to gh-pages (orphan — build only, no source or history)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd build
+          # Stop GitHub Pages' Jekyll from dropping the _app/ directory.
+          touch .nojekyll
+          git init -q
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "Deploy ${GITHUB_SHA::7}"
+          # -f replaces gh-pages entirely with this single-commit history.
+          git push -f -q "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" HEAD:gh-pages

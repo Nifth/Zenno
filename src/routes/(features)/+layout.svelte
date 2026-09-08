@@ -1,6 +1,7 @@
 <script lang="ts">
     import { activeFeatures } from "$lib/features"
-    import { page } from '$app/stores';  
+    import { page } from '$app/stores';
+    import { base } from '$app/paths';
     import type { Snippet } from 'svelte';
     
 	let { children }: { children: Snippet } = $props();
@@ -17,7 +18,7 @@
     		<!-- Top Link / Logo Home -->
     		<div class="h-16 border-b border-neutral-800/80 px-2 lg:px-6 flex items-center justify-center lg:justify-start">
     			<a
-    				href="/"
+    				href="{base}/"
     				title="Back to home"
     				class="group flex items-center gap-2 text-xl font-black tracking-tight text-neutral-100 hover:text-fuchsia-400 transition-colors"
     			>
@@ -37,7 +38,7 @@
     			{#each activeFeatures() as feature}
     				{@const isActive = $page.url.pathname.includes(feature.id)}
     				<a
-    					href={`/${feature.id}`}
+    					href={`${base}/${feature.id}`}
     					title={feature.name}
     					class="flex items-center justify-center lg:justify-start gap-0 lg:gap-3 px-2 lg:px-3 py-2 rounded-lg text-xs font-medium transition-all duration-150
     						{isActive

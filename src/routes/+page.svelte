@@ -1,5 +1,6 @@
 <script lang="ts">
 import { features, activeFeatures } from "$lib/features"
+import { base } from '$app/paths';
 
 const count = activeFeatures().length;
 const widthClasses =
@@ -45,7 +46,7 @@ const widthClasses =
     <div class="max-w-7xl mx-auto flex flex-wrap justify-center gap-6 pb-12">
         {#each activeFeatures() as feature}
             <a
-                href={`/${feature.id}`}
+                href={`${base}/${feature.id}`}
                 class="group w-full {widthClasses} flex flex-col justify-between p-6 rounded-xl border border-neutral-800 bg-neutral-900/50 hover:border-fuchsia-500/50 transition-all"
             >
                 <div>
