@@ -1,7 +1,6 @@
 <script lang="ts">
     import ToolLayout from '$lib/components/ToolLayout.svelte';
     import { parseJwt } from "$lib/utils/jwt";
-    let mode = $state<'encode' | 'decode'>('decode');
     let input = $state('')
 
     let result = $derived.by(() => {
@@ -9,9 +8,6 @@
                 return { value: '', error: null };
             }
         try {
-            if (mode === 'encode') {
-                return { value: 'Not implemented yet', error: 'Not implemented yet' };
-            }
             const decoded = parseJwt(input.trim());
             return {
                 payload: JSON.stringify(decoded.payload, null, 2),
@@ -36,19 +32,25 @@
         }
     });
 
+    // The highlighted overlay is injected via {@html}, so every piece of user
+    // input must be HTML-escaped first — otherwise a token containing e.g.
+    // `<img onerror=...>` would execute (self-XSS).
+    const escapeHtml = (s: string) =>
+        s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
     let highlightedJwt = $derived.by(() => {
         if (!input) return '';
 
         const parts = input.trim().split('.');
 
         const header = parts[0]
-            ? `<span class="text-orange-600">${parts[0]}</span>`
+            ? `<span class="text-orange-600">${escapeHtml(parts[0])}</span>`
             : '';
         const payload = parts[1]
-            ? `<span class="text-indigo-500">${parts[1]}</span>`
+            ? `<span class="text-indigo-500">${escapeHtml(parts[1])}</span>`
             : '';
         const signature = parts[2]
-            ? `<span class="text-emerald-600">${parts[2]}</span>`
+            ? `<span class="text-emerald-600">${escapeHtml(parts[2])}</span>`
             : '';
 
         const dots = `<span class="text-neutral-600 font-bold">.</span>`;
@@ -63,14 +65,14 @@
 
 <ToolLayout title="JWT Decoder">
   <!-- Main Grid (Input & Output Stack) -->
-  <div class="flex-1 flex flex-row gap-24 min-h-0">
+  <div class="flex-1 flex flex-col lg:flex-row gap-8 lg:gap-16 min-h-0">
       <!-- Input Section -->
       <div class="flex-1 flex flex-col space-y-2 min-h-0">
           <div class="flex items-center justify-between text-xs text-neutral-400 px-1">
               <label for="input-data" class="font-bold uppercase tracking-wider text-neutral-500">Input</label>
               <span>Raw JWT</span>
           </div>
-          <div class="relative w-full h-200 bg-neutral-900/60 border border-neutral-800 rounded-xl overflow-hidden font-mono text-sm leading-relaxed">
+          <div class="relative w-full h-64 lg:h-auto lg:flex-1 min-h-0 bg-neutral-900/60 border border-neutral-800 rounded-xl overflow-hidden font-mono text-sm leading-relaxed">
           <pre
               class="absolute inset-0 m-0 p-4 border border-transparent whitespace-pre-wrap break-all overflow-y-auto pointer-events-none font-mono text-sm leading-[1.425rem] tracking-normal antialiased"
               aria-hidden="true"
@@ -94,13 +96,13 @@
       <div class="flex-1 flex flex-col space-y-2 min-h-0">
           <div class="flex flex-1 flex-col space-y-2">
             <div class="flex items-center justify-between text-xs text-neutral-400 px-1">
-                <label for="output-data" class="font-bold uppercase tracking-wider text-orange-600">Decoded Header</label>
+                <label for="output-header" class="font-bold uppercase tracking-wider text-orange-600">Decoded Header</label>
             </div>
             <textarea
-                id="output-data"
+                id="output-header"
                 rows="8"
                 readonly
-                bind:value={result.header}
+                value={result.header}
                 placeholder="Header will appear here..."
                 class="w-full flex-1 p-4 rounded-xl bg-neutral-900/30 border border-neutral-800/80 placeholder-neutral-700 focus:outline-none resize-none font-mono text-sm leading-relaxed cursor-text focus:border-fuchsia-500/50 focus:ring-1 focus:ring-fuchsia-500/50"
             ></textarea>
@@ -109,7 +111,7 @@
 
             <div class="flex flex-1 flex-col pt-6 space-y-2">
                 <div class="flex items-center justify-between text-xs text-neutral-400 min-h-8">
-                    <label for="output-data" class="font-bold uppercase tracking-wider text-indigo-500">Decoded Payload</label>
+                    <label for="output-payload" class="font-bold uppercase tracking-wider text-indigo-500">Decoded Payload</label>
 
                     {#if expiration?.expired !== undefined}
                       <div class="flex items-center gap-3">
@@ -131,10 +133,10 @@
                     {/if}
                 </div>
                 <textarea
-                    id="output-data"
+                    id="output-payload"
                     rows="8"
                     readonly
-                    bind:value={result.payload}
+                    value={result.payload}
                     placeholder="Payload will appear here..."
                     class="w-full flex-1 p-4 rounded-xl bg-neutral-900/30 border border-neutral-800/80 placeholder-neutral-700 focus:outline-none resize-none font-mono text-sm leading-relaxed cursor-text focus:border-fuchsia-500/50 focus:ring-1 focus:ring-fuchsia-500/50"
                 ></textarea>
@@ -142,13 +144,13 @@
 
             <div class="flex flex-1 flex-col pt-6 space-y-2">
                 <div class="flex items-center justify-between text-xs text-neutral-400">
-                    <label for="output-data" class="font-bold uppercase tracking-wider text-emerald-600">Signature</label>
+                    <label for="output-signature" class="font-bold uppercase tracking-wider text-emerald-600">Signature</label>
                 </div>
                 <textarea
-                    id="output-data"
+                    id="output-signature"
                     rows="8"
                     readonly
-                    bind:value={result.signature}
+                    value={result.signature}
                     placeholder="Signature will appear here..."
                     class="w-full flex-1 p-4 rounded-xl bg-neutral-900/30 border border-neutral-800/80 placeholder-neutral-700 focus:outline-none resize-none font-mono text-sm leading-relaxed cursor-text focus:border-fuchsia-500/50 focus:ring-1 focus:ring-fuchsia-500/50"
                 ></textarea>

@@ -1,4 +1,15 @@
-export const features = [
+export type FeatureStatus = 'ready' | 'in progress' | 'planned';
+
+export type Feature = {
+	id: string;
+	name: string;
+	desc: string;
+	category: string;
+	icon: string;
+	status: FeatureStatus;
+};
+
+export const features: Feature[] = [
 	{
 		id: "json-formatter",
 		name: "JSON Prettify & Minify",
@@ -57,6 +68,6 @@ export const features = [
 	},
 ];
 
-export const activeFeatures = () => {
-    return features.filter((f) => ["ready","in progress"].includes(f.status));
+export const activeFeatures = (): Feature[] => {
+	return features.filter((f) => f.status === 'ready' || f.status === 'in progress');
 };

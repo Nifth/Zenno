@@ -1,18 +1,15 @@
 <script lang="ts">
 import { features, activeFeatures } from "$lib/features"
 
-let widthClasses =
-	"sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] xl:w-[calc(25%-18px)]";
 const count = activeFeatures().length;
-if (count === 1) {
-	widthClasses = "w-full";
-} else if (count === 2) {
-	widthClasses =
-		"sm:w-[calc(50%-12px)] lg:w-[calc(50%-16px)] xl:w-[calc(50%-18px)]";
-} else if (count === 3) {
-	widthClasses =
-		"sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] xl:w-[calc(33.333%-18px)]";
-}
+const widthClasses =
+	count === 1
+		? "w-full"
+		: count === 2
+			? "sm:w-[calc(50%-12px)] lg:w-[calc(50%-16px)] xl:w-[calc(50%-18px)]"
+			: count === 3
+				? "sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] xl:w-[calc(33.333%-18px)]"
+				: "sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] xl:w-[calc(25%-18px)]";
 </script>
 
 <!-- Header (~180px) -->
@@ -49,7 +46,7 @@ if (count === 1) {
         {#each activeFeatures() as feature}
             <a
                 href={`/${feature.id}`}
-                class="w-full {widthClasses} flex flex-col justify-between p-6 rounded-xl border border-neutral-800 bg-neutral-900/50 hover:border-fuchsia-500/50 transition-all"
+                class="group w-full {widthClasses} flex flex-col justify-between p-6 rounded-xl border border-neutral-800 bg-neutral-900/50 hover:border-fuchsia-500/50 transition-all"
             >
                 <div>
                     <!-- Card Header -->
