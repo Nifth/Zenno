@@ -1,5 +1,5 @@
 // UTF-8 safe Base64 helpers. `btoa`/`atob` only handle Latin1, so raw
-// `btoa("é")` throws — we round-trip through TextEncoder/TextDecoder instead.
+// `btoa("é")` throws - we round-trip through TextEncoder/TextDecoder instead.
 
 export function encodeBase64(input: string): string {
     const bytes = new TextEncoder().encode(input);

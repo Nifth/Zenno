@@ -33,7 +33,7 @@
     });
 
     // The highlighted overlay is injected via {@html}, so every piece of user
-    // input must be HTML-escaped first — otherwise a token containing e.g.
+    // input must be HTML-escaped first - otherwise a token containing e.g.
     // `<img onerror=...>` would execute (self-XSS).
     const escapeHtml = (s: string) =>
         s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');

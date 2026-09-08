@@ -48,7 +48,7 @@ export const features: Feature[] = [
 		desc: "Side-by-side text and JSON structural comparison.",
 		category: "Utilities",
 		icon: "🔍",
-		status: "planned",
+		status: "ready",
 	},
 	{
 		id: "regex-tester",
@@ -56,7 +56,7 @@ export const features: Feature[] = [
 		desc: "Test JavaScript regular expressions with live highlights.",
 		category: "DevTools",
 		icon: "🧪",
-		status: "planned",
+		status: "ready",
 	},
 ];
 

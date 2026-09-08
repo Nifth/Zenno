@@ -1,5 +1,5 @@
 // URL percent-encoding helpers. We use the `*Component` variants so that
-// reserved characters (& = ? / #) are encoded too — that is what people
+// reserved characters (& = ? / #) are encoded too - that is what people
 // expect from a "URL encoder", unlike bare encodeURI which leaves them.
 
 export function encodeUrl(input: string): string {

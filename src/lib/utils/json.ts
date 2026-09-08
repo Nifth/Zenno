@@ -46,11 +46,11 @@ export function highlightJson(json: string): string {
         /("(?:\\u[a-fA-F0-9]{4}|\\[^u]|[^\\"])*"(?:\s*:)?|\b(?:true|false)\b|\bnull\b|-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)/g;
 
     return escapeHtml(json).replace(tokens, (match) => {
-        let cls = 'text-sky-400'; // number / float — "weird blue"
+        let cls = 'text-sky-400'; // number / float - "weird blue"
         if (match.startsWith('"')) {
             cls = match.trimEnd().endsWith(':')
                 ? 'text-fuchsia-300' // object key
-                : 'text-emerald-400'; // string — "weird green"
+                : 'text-emerald-400'; // string - "weird green"
         } else if (match === 'true' || match === 'false') {
             cls = 'text-orange-400'; // boolean
         } else if (match === 'null') {
