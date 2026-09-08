@@ -11,12 +11,12 @@ export type Feature = {
 
 export const features: Feature[] = [
 	{
-		id: "json-formatter",
-		name: "JSON Prettify & Minify",
-		desc: "Format, validate and compress JSON strings instantly.",
+		id: "json",
+		name: "JSON Formatter",
+		desc: "Beautify, minify and validate JSON with syntax highlighting.",
 		category: "Formatters",
 		icon: "⚙",
-		status: "planned",
+		status: "ready",
 	},
 	{
 		id: "base64",

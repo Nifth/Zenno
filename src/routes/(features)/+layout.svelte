@@ -10,7 +10,7 @@
     })
 </script>
 
-<div class="flex">
+<div class="flex h-screen overflow-hidden">
     <!-- Sidebar (icon rail under lg, full width from lg) -->
     <aside class="w-16 lg:w-64 shrink-0 border-r border-neutral-800 bg-neutral-900/40 flex flex-col justify-between select-none h-screen">
     	<div>
@@ -59,7 +59,7 @@
     </aside>
     
     <!-- Zone de contenu principal de la Feature -->
-    <main class="flex-1 overflow-y-auto p-8">
+    <main class="flex-1 min-w-0 h-full overflow-y-auto p-8">
        	{@render children()}
     </main>
 </div>
