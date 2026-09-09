@@ -1,0 +1,1 @@
+import"../chunks/BBrvtbUu.js";import"../chunks/xihTtKlq.js";import{t as e}from"../chunks/Tp41I10p.js";function t(e){return encodeURIComponent(e)}function n(e){return decodeURIComponent(e)}function r(r){e(r,{title:`URL Encoder / Decoder`,get encode(){return t},get decode(){return n},errorMessage:`Invalid URL string: failed to decode input.`})}export{r as component};
