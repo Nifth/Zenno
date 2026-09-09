@@ -4,6 +4,8 @@
   let { title, actions, children }: { title: string; actions?: Snippet; children: Snippet } = $props();
 </script>
 
+<svelte:head><title>{title} · Zenno</title></svelte:head>
+
 <div class="flex flex-col h-full p-8 space-y-6">
   <div class="flex items-center justify-between pb-4 border-b border-neutral-800">
     <h1 class="text-2xl font-extrabold tracking-tight text-neutral-100">{title}</h1>
